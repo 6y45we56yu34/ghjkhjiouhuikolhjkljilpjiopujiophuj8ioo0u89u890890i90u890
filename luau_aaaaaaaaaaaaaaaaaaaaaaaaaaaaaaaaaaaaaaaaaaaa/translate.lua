@@ -145,7 +145,11 @@ if shared.Players.LocalPlayer.PlayerGui:FindFirstChild('Chat') then
 
         shared.translating = true
         task.spawn(function()
-        	if shared.currentISOout == 
+        	if shared.currentISOout == shared.DefaultLang then
+			result = {msg, shared.DefaultLang}
+		else
+		    result = ChatHandler:Handle(msg, false)
+		end
             result = ChatHandler:Handle(msg)
             shared.info('Got result from ChatHandler:',result)
             if result ~= nil and next(result) ~= nil then
