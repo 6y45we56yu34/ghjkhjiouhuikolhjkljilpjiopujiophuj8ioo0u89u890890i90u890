@@ -262,9 +262,7 @@ pcall(function()
     wait()
     
     local properties = {
-        Color = Color3.new(1,1,0);
-        Font = Enum.Font.SourceSansItalic;
-        TextSize = 16;
+        Color = Color3.fromRGB(0, 145, 255);
     }
     
     game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage",
