@@ -58,7 +58,7 @@ shared.info('Currently supported isoCodes:', shared.HttpService:JSONEncode(share
 
 shared.currentISOin = 'en' -- DEFAULT ENGLISH ISO
 shared.translateIn = true
-shared.currentISOout = getfenv().DefaultLang -- DEFAULT ENGLISH ISO
+shared.currentISOout = getfenv().DefaultLang or "en" -- DEFAULT ENGLISH ISO
 shared.translateOut = true
 
 local Translator = shared.import('modules/Translator.lua')
@@ -168,3 +168,4 @@ shared.StarterGui:SetCore('ChatMakeSystemMessage',{
     Text = '{TRANSLATOR STARTED}', 
 	Color = Color3.fromRGB(0, 145, 255)
 })
+
