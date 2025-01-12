@@ -1,4 +1,4 @@
-repeat wait() until game:IsLoaded()
+repeat task.wait() until game:IsLoaded()
 
 shared.user = 'Sino1507'
 shared.repo = 'Chat-Translator/main/src'
