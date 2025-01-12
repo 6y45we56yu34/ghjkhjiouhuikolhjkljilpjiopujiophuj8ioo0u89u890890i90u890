@@ -267,11 +267,10 @@ pcall(function()
         TextSize = 16;
     }
     
-    game:GetService("StarterGui"):SetCore("SendNotification",
+    game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage",
         {
-            Title = "Chat Translator",
-            Text = "Ported to Google Translate",
-            Duration = 3
+            Text = "{TRANSLATOR STARTED}",
+            Color = Color3.fromRGB(0, 145, 255)
         }
     )
                       
