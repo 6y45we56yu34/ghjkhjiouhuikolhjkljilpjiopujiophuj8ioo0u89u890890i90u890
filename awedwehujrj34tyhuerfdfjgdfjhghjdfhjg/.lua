@@ -161,10 +161,28 @@ function randomString()
 end
 
 PARENT = nil
-local Main = Instance.new("ScreenGui")
-Main.Name = randomString()
+if get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = Instance.new("ScreenGui")
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	PARENT = Main
+elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
+	local Main = Instance.new("ScreenGui")
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	PARENT = Main
+elseif COREGUI:FindFirstChild('RobloxGui') then
+	PARENT = COREGUI.RobloxGui
+else
+	local Main = Instance.new("ScreenGui")
+	Main.Name = randomString()
+	Main.Parent = COREGUI
+	PARENT = Main
+end
+
 Main.Parent = gethui()
-PARENT = Main
 
 shade1 = {}
 shade2 = {}
@@ -4747,7 +4765,7 @@ IndexContents("", true)
 
 function checkTT()
 	local t
-	local guisAtPosition = :GetGuiObjectsAtPosition(IYMouse.X, IYMouse.Y)
+	local guisAtPosition = COREGUI:GetGuiObjectsAtPosition(IYMouse.X, IYMouse.Y)
 
 	for _, gui in pairs(guisAtPosition) do
 		if gui.Parent == CMDsF then
@@ -5517,16 +5535,16 @@ end
 
 function ESP(plr)
 	task.spawn(function()
-		for i,v in pairs(:GetChildren()) do
+		for i,v in pairs(COREGUI:GetChildren()) do
 			if v.Name == plr.Name..'_ESP' then
 				v:Destroy()
 			end
 		end
 		wait()
-		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not :FindFirstChild(plr.Name..'_ESP') then
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
 			local ESPholder = Instance.new("Folder")
 			ESPholder.Name = plr.Name..'_ESP'
-			ESPholder.Parent = 
+			ESPholder.Parent = COREGUI
 			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
 			for b,n in pairs (plr.Character:GetChildren()) do
 				if (n:IsA("BasePart")) then
@@ -5590,7 +5608,7 @@ function ESP(plr)
 					end
 				end)
 				local function espLoop()
-					if :FindFirstChild(plr.Name..'_ESP') then
+					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
 						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
 							TextLabel.Text = 'Name: '..plr.Name..' | Health: '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
@@ -5609,16 +5627,16 @@ end
 
 function CHMS(plr)
 	task.spawn(function()
-		for i,v in pairs(:GetChildren()) do
+		for i,v in pairs(COREGUI:GetChildren()) do
 			if v.Name == plr.Name..'_CHMS' then
 				v:Destroy()
 			end
 		end
 		wait()
-		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not :FindFirstChild(plr.Name..'_CHMS') then
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_CHMS') then
 			local ESPholder = Instance.new("Folder")
 			ESPholder.Name = plr.Name..'_CHMS'
-			ESPholder.Parent = 
+			ESPholder.Parent = COREGUI
 			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
 			for b,n in pairs (plr.Character:GetChildren()) do
 				if (n:IsA("BasePart")) then
@@ -5670,16 +5688,16 @@ end
 
 function Locate(plr)
 	task.spawn(function()
-		for i,v in pairs(:GetChildren()) do
+		for i,v in pairs(COREGUI:GetChildren()) do
 			if v.Name == plr.Name..'_LC' then
 				v:Destroy()
 			end
 		end
 		wait()
-		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not :FindFirstChild(plr.Name..'_LC') then
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_LC') then
 			local ESPholder = Instance.new("Folder")
 			ESPholder.Name = plr.Name..'_LC'
-			ESPholder.Parent = 
+			ESPholder.Parent = COREGUI
 			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
 			for b,n in pairs (plr.Character:GetChildren()) do
 				if (n:IsA("BasePart")) then
@@ -5743,7 +5761,7 @@ function Locate(plr)
 					end
 				end)
 				local function lcLoop()
-					if :FindFirstChild(plr.Name..'_LC') then
+					if COREGUI:FindFirstChild(plr.Name..'_LC') then
 						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
 							TextLabel.Text = 'Name: '..plr.Name..' | Health: '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
@@ -7518,16 +7536,16 @@ addcmd('cleargamewaypoints',{'cgamewp'},function(args, speaker)
 end)
 
 
-local TypeNames = {
+local coreGuiTypeNames = {
 	-- predefined aliases
-	["inventory"] = Enum.Type.Backpack,
-	["leaderboard"] = Enum.Type.PlayerList,
-	["emotes"] = Enum.Type.EmotesMenu
+	["inventory"] = Enum.CoreGuiType.Backpack,
+	["leaderboard"] = Enum.CoreGuiType.PlayerList,
+	["emotes"] = Enum.CoreGuiType.EmotesMenu
 }
 
 -- Load the full list of enums
-for _, enumItem in ipairs(Enum.Type:GetEnumItems()) do
-	TypeNames[enumItem.Name:lower()] = enumItem
+for _, enumItem in ipairs(Enum.CoreGuiType:GetEnumItems()) do
+	coreGuiTypeNames[enumItem.Name:lower()] = enumItem
 end
 
 addcmd('enable',{},function(args, speaker)
@@ -7536,9 +7554,9 @@ addcmd('enable',{},function(args, speaker)
 		if input == "reset" then
 			StarterGui:SetCore("ResetButtonCallback", true)
 		else
-			local Type = TypeNames[input]
-			if Type then
-				StarterGui:SetEnabled(Type, true)
+			local coreGuiType = coreGuiTypeNames[input]
+			if coreGuiType then
+				StarterGui:SetCoreGuiEnabled(coreGuiType, true)
 			end
 		end
 	end
@@ -7550,9 +7568,9 @@ addcmd('disable',{},function(args, speaker)
 		if input == "reset" then
 			StarterGui:SetCore("ResetButtonCallback", false)
 		else
-			local Type = TypeNames[input]
-			if Type then
-				StarterGui:SetEnabled(coreGuiType, false)
+			local coreGuiType = coreGuiTypeNames[input]
+			if coreGuiType then
+				StarterGui:SetCoreGuiEnabled(coreGuiType, false)
 			end
 		end
 	end
